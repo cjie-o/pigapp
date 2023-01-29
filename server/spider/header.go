@@ -37,27 +37,27 @@ func NewTj() *Tj {
 }
 
 func New() *Nw {
-	n := &Nw{}
-	n.bodyer = map[string]string{
-		`shehuiredian`:   `247`, // 社会热点
-		`xinwen`:         `58`,  //  国内新闻
-		`qihuo`:          `263`, // 生猪货期
-		`guojixinwen`:    `147`, // 国际新闻
-		`xingyedianping`: `148`, // 行业点评
-		`dujiafenxi`:     `149`, // 原创分析
-		`hangqingfenxi`:  `81`,  // 行情分析
-		`zhuping`:        `70`,  // 每日猪评
-		`zhuchangjs`:     `31`,  // 猪场建设
-		`shoujing`:       `32`,  // 繁育管理
-		`siliaoyy`:       `91`,  // 饲养管理
-		`kxyangzhu`:      `35`,  // 猪场管理
-		`zhubingfz`:      `29`,  // 猪病技术
-		`shengzhu`:       `63`,  // 生猪价格
-		`zizhu`:          `64`,  // 仔猪价格
-		`zhurou`:         `65`,  // 猪肉价格
-		`shengshi`:       `115`, // 各省市猪价
+	return &Nw{
+		bodyer: map[string]string{
+			`shehuiredian`:   `247`, // 社会热点
+			`xinwen`:         `58`,  //  国内新闻
+			`qihuo`:          `263`, // 生猪货期
+			`guojixinwen`:    `147`, // 国际新闻
+			`xingyedianping`: `148`, // 行业点评
+			`dujiafenxi`:     `149`, // 原创分析
+			`hangqingfenxi`:  `81`,  // 行情分析
+			`zhuping`:        `70`,  // 每日猪评
+			`zhuchangjs`:     `31`,  // 猪场建设
+			`shoujing`:       `32`,  // 繁育管理
+			`siliaoyy`:       `91`,  // 饲养管理
+			`kxyangzhu`:      `35`,  // 猪场管理
+			`zhubingfz`:      `29`,  // 猪病技术
+			`shengzhu`:       `63`,  // 生猪价格
+			`zizhu`:          `64`,  // 仔猪价格
+			`zhurou`:         `65`,  // 猪肉价格
+			`shengshi`:       `115`, // 各省市猪价
+		},
 	}
-	return n
 }
 
 func Video() *Vd {
