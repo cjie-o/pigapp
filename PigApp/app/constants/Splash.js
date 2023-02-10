@@ -5,13 +5,13 @@ const Splash = ({navigation}) => {
   React.useEffect(() => {
     setTimeout(() => {
       // replace：销毁当前页，跳转到下个页面
-      navigation.replace('Index');
+      navigation.replace('Tab');
     }, 3000);
   }, [navigation]);
 
   return (
     <View style={styles.splash}>
-      <StatusBar hidden={true} />
+      {/* <StatusBar hidden={true} /> */}
       <Image source={require('../../assets/1.webp')} />
     </View>
   );

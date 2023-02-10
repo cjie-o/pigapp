@@ -1,7 +1,3 @@
-/**
- * Created by HuangXiaoFeng on 2018-02-08.
- */
-
 import React, { PureComponent } from 'react';
 import {
     FlatList,
@@ -19,7 +15,7 @@ import {
 import ajax from '../utils/ajax'
 import Toast, { DURATION } from 'react-native-easy-toast'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 export default class XFFlatList extends PureComponent {
 
@@ -58,10 +54,10 @@ export default class XFFlatList extends PureComponent {
         let requestHome = this.props.requestHome;
 
         ajax({
-            url: `http://192.168.2.6:19787/api/v1/${requestHome}/${requestCode}`,
+            url: `http://192.168.2.6:19787/api/${requestHome}/${requestCode}`,
             success: (data) => {    
                 _this.setState({
-                    sourceData: _this.state.refreshing ? data[requestCode] : [..._this.state.sourceData, ...data[requestCode]]
+                    sourceData: _this.state.refreshing ? data : [..._this.state.sourceData, ...data]
 
                 });
             },
@@ -100,7 +96,7 @@ export default class XFFlatList extends PureComponent {
         });
 
         // 跳转视频详情页面
-        if (item['body']=='') {
+        if (item['Isvideo']==1) {
             this.props.navigation.push('VideoDetail', { item });
             return
         }
@@ -191,9 +187,9 @@ export default class XFFlatList extends PureComponent {
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     // 初始加载的条数，不会被卸载
-                    initialNumToRender={10}
+                    initialNumToRender={20}
                     // 决定当距离内容最底部还有多远时触发onEndReached回调；数值范围0~1，例如：0.5表示可见布局的最底端距离content最底端等于可见布局一半高度的时候调用该回调
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.5}
                     // 当列表被滚动到距离内容最底部不足onEndReacchedThreshold设置的距离时调用
                     onEndReached={this._onEndReached}
                     //ListHeaderComponent={ this._renderHeader }
@@ -204,7 +200,7 @@ export default class XFFlatList extends PureComponent {
                     refreshing={this.state.refreshing}
                     onRefresh={this._renderRefresh}
                 // 是一个可选的优化，用于避免动态测量内容；+50是加上Header的高度
-                //getItemLayout={(data, index) => ( { length: 40, offset: (40 + 1) * index + 50, index } )}
+                getItemLayout={(data, index) => ( { length: 40, offset: (40 + 1) * index + 50, index } )}
                 />
                 <Toast
                     ref="toast"
@@ -221,7 +217,7 @@ export default class XFFlatList extends PureComponent {
 }
 
 // 根据数据返回不同布局的item
-class FlatListItem extends React.PureComponent {
+class FlatListItem extends PureComponent {
     _onPress = () => {
         this.props.onPressItem(this.props.item);
     };
@@ -229,11 +225,16 @@ class FlatListItem extends React.PureComponent {
     render() {
         let item = this.props.item;
         // 判断是否是三图布局
-        let isThreePic = item['imgnewextra'];
+        let isThreePic = item['Isimage'];
         // 判断是否是视频布局
-        let isVideo = item['body'];
+        let isVideo = item['Isvideo'];
+        let images=[
+            {image:item.Image1},
+            {image:item.Image2},
+            {image:item.Image3},
+        ]
 
-        if (isThreePic) {
+        if (isThreePic==1) {
             return (
                 <TouchableOpacity
                     {...this.props}
@@ -242,31 +243,35 @@ class FlatListItem extends React.PureComponent {
                     activeOpacity={.8}
                 >
                     <View style={{ justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 16, lineHeight: 25, color: '#2c2c2c' }}>{item.title}</Text>
+                        <Text style={{ fontSize: 18, lineHeight: 25, color: '#2c2c2c' }}>{item.Title}</Text>
 
                         <View style={{ flexDirection: 'row', marginVertical: 5, justifyContent: 'space-between' }}>
-                            <Image source={{ uri: item.imgsrc }} style={{ width: screenWidth * .35, height: 80 }} />
+                            <View />
                             {
-                                item.imgnewextra.map((imgItem, index) => (
-                                    <Image source={{ uri: imgItem.imgsrc }} key={index + ''} style={{ width: screenWidth * .3, height: 80 }} />
+                                images.map((imgItem, index) => (
+                                    <Image source={{ uri: imgItem.image }} key={index + ''} style={{ width: screenWidth * .32, height: 80,borderRadius:2 }} />
                                 )
                                 )
                             }
+                              {/* <Image source={{ uri: item.Image1 }}  style={{ width: screenWidth * .3, height: 80 }} />
+                              <Image source={{ uri: item.Image2 }}  style={{ width: screenWidth * .3, height: 80 }} />
+                              <Image source={{ uri: item.Image3 }}  style={{ width: screenWidth * .3, height: 80 }} /> */}
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', }}>
-                                <Text style={{ marginRight: 6 }}>{item.source}</Text>
+                                <Text style={{ marginRight: 16 }}>{item.Source}</Text>
+                                <Text>{item.Browse}看过</Text>
                                 {/* <Text style={{ marginRight: 6 }}>{item.replyCount}跟帖</Text> */}
                             </View>
-                            <Text style={{ color: '#ccc', fontSize: 18 }}>x</Text>
+                            {/* <Text style={{ color: '#ccc', fontSize: 18 }}>x</Text> */}
                         </View>
                     </View>
                 </TouchableOpacity>
             );
         }
 
-        if (isVideo == '') {
+        if (isVideo == 1) {
             return (
                 <TouchableOpacity
                     {...this.props}
@@ -275,16 +280,16 @@ class FlatListItem extends React.PureComponent {
                     activeOpacity={.8}
                 >
                     <View style={{ justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 16, lineHeight: 25, color: '#2c2c2c' }}>{item.title}</Text>
-                        <ImageBackground source={{ uri: item.imgsrc }} resizeMode={'cover'} style={{ height: 180, marginVertical: 6, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 18, lineHeight: 25, color: '#2c2c2c' }}>{item.Title}</Text>
+                        <ImageBackground source={{ uri: item.Videoimage }} resizeMode={'cover'} style={{ height: 180, marginVertical: 6, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'rgba(0,0,0,.5)', justifyContent: 'center', alignItems: 'center' }}>
                                 <Image source={require('./../../assets/images/i_play.png')} resizeMode={'contain'} style={{ width: 18, height: 18, marginLeft: 3 }} />
                             </View>
                         </ImageBackground>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', }}>
-                                <Text style={{ marginRight: 6 }}>{item.ptime}</Text>
-                                {/* <Text>{item.replyCount}跟帖</Text> */}
+                                <Text style={{ marginRight: 16 }}>{item.Source}</Text>
+                                <Text>{item.Browse}看过</Text>
                             </View>
                         </View>
                     </View>
@@ -299,18 +304,18 @@ class FlatListItem extends React.PureComponent {
                 style={styles.item}
                 activeOpacity={.8}
             >
-                <View style={{ width: screenWidth * .63, height: 100, justifyContent: 'space-between' }}>
-                    <Text style={{ fontSize: 16, lineHeight: 25, color: '#2c2c2c' }}>{item.title}</Text>
+                <View style={{ width: screenWidth * .63, height: 120, justifyContent: 'space-between' }}>
+                    <Text style={{ fontSize: 18, lineHeight: 25, color: '#2c2c2c' }}>{item.Title}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', }}>
-                            <Text style={{ marginRight: 6 }}>{item.source}</Text>
-                            <Text>{item.ptime}</Text>
+                            <Text style={{ marginRight: 16 }}>{item.Source}</Text>
+                            <Text>{item.Browse}看过</Text>
                             {/* <Text>{item.replyCount}跟帖</Text> */}
                         </View>
                         {/* <Text style={{ color: '#ccc', fontSize: 18 }}>x</Text> */}
                     </View>
                 </View>
-                <Image source={{ uri: item.imgsrc }} style={{ width: screenWidth * .3, height: 80 }} />
+                <Image source={{ uri: item.Photo }} style={{ width: screenWidth * .4, height: 90 }} />
             </TouchableOpacity>
         );
 

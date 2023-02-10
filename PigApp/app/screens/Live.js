@@ -28,7 +28,7 @@ import {
 
 import Modal from 'react-native-modalbox';
 
-const {width: screenW, height: screenH } = Dimensions.get('window');
+const {width: screenW, height: screenH } = Dimensions.get('screen');
 
 
 class Child extends PureComponent{

@@ -8,6 +8,8 @@ import VideoDetail from '../screens/subPages/VideoDetail';
 import NewsDetail from '../screens/subPages/NewsDetail';
 import NewsDetailStackScreen from './stacks/NewsDetailStackScreen';
 import Splash from '../constants/Splash';
+import Login from '../screens/Login';
+import "../storage/store"
 const RootStack = createNativeStackNavigator();
 
 const RootStackScreen = () => {
@@ -18,12 +20,13 @@ const RootStackScreen = () => {
           headerShown: false,
         }}>
         <RootStack.Group>
+          <RootStack.Screen name="Splash" component={Splash} />
           <RootStack.Screen name="Tab" component={TabScreen} />
           <RootStack.Screen name="SearchStack" component={SearchStackScreen} />
           {/* <RootStack.Screen name="SettingStack" component={SettingStackScreen} /> */}
           <RootStack.Screen name="NewsDetailStack" component={NewsDetailStackScreen} />
           <RootStack.Screen name="VideoDetail" component={VideoDetail} />
-          <RootStack.Screen name="Splash" component={Splash} />
+          <RootStack.Screen name="Login" component={Login} />
         </RootStack.Group>
 
         <RootStack.Group>

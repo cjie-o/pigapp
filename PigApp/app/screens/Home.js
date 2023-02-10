@@ -18,7 +18,7 @@ import XFFlatList from '../components/HomeFlatList'
 import ajax from '../utils/ajax'
 
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 export default class Home extends PureComponent {
 
@@ -31,24 +31,30 @@ export default class Home extends PureComponent {
   }
 
   tabArr = [
-    { columnName: '推荐', requestCode: 'tuijian' ,requestHome:'news'},
-    { columnName: '社会热点', requestCode: 'shehuiredian' ,requestHome:'news'},
-    { columnName: '国内新闻', requestCode: 'xinwen' ,requestHome:'news'},
-    { columnName: '生猪货期', requestCode: 'qihuo' ,requestHome:'news'},
-    { columnName: '国际新闻', requestCode: 'guojixinwen' ,requestHome:'news'},
-    { columnName: '行业点评', requestCode: 'xingyedianping' ,requestHome:'news'},
-    { columnName: '原创分析', requestCode: 'dujiafenxi' ,requestHome:'news'},
-    { columnName: '行情分析', requestCode: 'hangqingfenxi' ,requestHome:'news'},
-    { columnName: '每日猪评', requestCode: 'zhuping' ,requestHome:'news'},
-    { columnName: '猪场建设', requestCode: 'zhuchangjs' ,requestHome:'news'},
-    { columnName: '繁育管理', requestCode: 'shoujing' ,requestHome:'news'},
-    { columnName: '饲养管理', requestCode: 'siliaoyy' ,requestHome:'news'},
-    { columnName: '猪场管理', requestCode: 'kxyangzhu' ,requestHome:'news'},
-    { columnName: '猪病技术', requestCode: 'zhubingfz' ,requestHome:'news'},
+    { columnName: '推荐', requestCode: '' ,requestHome:'news'},
+    { columnName: '头条', requestCode: 'toutiao' ,requestHome:'news'},
+    { columnName: '国内', requestCode: 'guonei' ,requestHome:'news'},
+    { columnName: '国际', requestCode: 'guoji' ,requestHome:'news'},
+    { columnName: '政策', requestCode: 'zhengce' ,requestHome:'news'},
+    { columnName: '点评', requestCode: 'dianping' ,requestHome:'news'},
+    { columnName: '企业', requestCode: 'qiye' ,requestHome:'news'},
+    { columnName: '展会报道', requestCode: 'zhanhui' ,requestHome:'news'},
     { columnName: '生猪价格', requestCode: 'shengzhu' ,requestHome:'news'},
+    { columnName: '分析', requestCode: 'fenxi' ,requestHome:'news'},
     { columnName: '仔猪价格', requestCode: 'zizhu' ,requestHome:'news'},
-    { columnName: '猪肉价格', requestCode: 'zhurou' ,requestHome:'news'},
-    { columnName: '各省市猪价', requestCode: 'shengshi' ,requestHome:'news'},
+    { columnName: '猪评', requestCode: 'zhuping' ,requestHome:'news'},
+    { columnName: '饲料价格', requestCode: 'siliao' ,requestHome:'news'},
+    { columnName: '种猪价格', requestCode: 'zhongzhu' ,requestHome:'news'},
+    { columnName: '猪肉价格', requestCode: 'zhuru' ,requestHome:'news'},
+    { columnName: '时事', requestCode: 'shishi' ,requestHome:'news'},
+    { columnName: '技术', requestCode: 'jisuzl' ,requestHome:'news'},
+    { columnName: '观点', requestCode: 'guandian' ,requestHome:'news'},
+    { columnName: '品牌', requestCode: 'pinpai' ,requestHome:'news'},
+    { columnName: '营销', requestCode: 'yingxiao' ,requestHome:'news'},
+    { columnName: '电商', requestCode: 'dianshang' ,requestHome:'news'},
+    { columnName: '管理', requestCode: 'guanli' ,requestHome:'news'},
+    { columnName: '供求', requestCode: 'gongqiu' ,requestHome:'news'},
+    
   ];
 
   // swiperData = [
@@ -144,7 +150,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 70,
-    // paddingTop: isLT19()?0:25,
     paddingBottom: 5
   },
   headerLogo: {

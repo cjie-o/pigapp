@@ -17,11 +17,12 @@ import {
     Easing
 } from 'react-native';
 import ListItem from '../components/ListItem'
+import Login from './Login';
 
-export default class Mine extends PureComponent{
+export default class Mine extends PureComponent {
 
     /* 构造器 */
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             rotation: new Animated.Value(0),
@@ -35,7 +36,7 @@ export default class Mine extends PureComponent{
         {
             leftText: '我的消息',
             rightText: '评论我的跟帖/通知',
-            onPress(){
+            onPress() {
                 alert(123);
             }
         },
@@ -64,65 +65,91 @@ export default class Mine extends PureComponent{
         },
     ];
 
-  /* 渲染后 */
-  componentDidMount() {
+    /* 渲染后 */
+    componentDidMount() {
 
-    //顺序执行
-    Animated.sequence([
+        //顺序执行
+        Animated.sequence([
 
-      Animated.timing(
-        this.state.rotation,
-        {
-          toValue: 1,
-          duration: 500,
-          easing: Easing.linear,// linear \ ease
-          useNativeDriver: true
+            Animated.timing(
+                this.state.rotation,
+                {
+                    toValue: 1,
+                    duration: 500,
+                    easing: Easing.linear,// linear \ ease
+                    useNativeDriver: true
+                }
+            ),
+            Animated.timing(
+                this.state.scale,
+                {
+                    toValue: 1.3,
+                    duration: 600,
+                    useNativeDriver: true
+                }
+            ),
+
+            // 同时执行
+            Animated.parallel([
+                Animated.timing(
+                    this.state.scale,
+                    {
+                        toValue: 1,
+                        duration: 500,
+                        useNativeDriver: true
+                    }
+                ),
+                Animated.timing(
+                    this.state.opacity,
+                    {
+                        toValue: 1,
+                        duration: 1000,
+                        useNativeDriver: true
+                    }
+                ),
+                Animated.timing(
+                    this.state.translateY,
+                    {
+                        toValue: 0,
+                        duration: 600,
+                        useNativeDriver: true
+                    }
+                ),
+            ])
+
+        ]).start();
+
+    }
+    _showLogin = () => {
+        if (this.state.user_name) {
+            return (
+                <View style={{ marginTop: 20, flexDirection: 'row', marginLeft: 20 }}>
+                    <Image source={{ uri: this.state.user_avatar }} style={styles.avatar} />
+                    <Text style={{ fontSize: 23, marginTop: 15, marginLeft: 10, fontWeight: 'bold' }}>{this.state.user_name}</Text>
+                </View>
+            )
+        } else {
+
+            return (
+                <View style={styles.loginBtn} onTouchStart={() => {
+                    this.props.navigation.navigate('Login', {
+                        refresh: () => { this._getUserDetail() }
+                    });
+                }} >
+                    <Text style={styles.logintxt}>登录</Text>
+                </View>
+            )
         }
-      ),
-      Animated.timing(
-        this.state.scale,
-        {
-          toValue: 1.3,
-          duration: 600,
-          useNativeDriver: true
-        }
-      ),
 
-      // 同时执行
-      Animated.parallel([
-        Animated.timing(
-          this.state.scale,
-          {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true
-          }
-        ),
-        Animated.timing(
-          this.state.opacity,
-          {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true
-          }
-        ),
-        Animated.timing(
-          this.state.translateY,
-          {
-            toValue: 0,
-            duration: 600,
-            useNativeDriver: true
-          }
-        ),
-      ])
-
-    ]).start();
-
-  }
+    }
 
     render() {
         return (
             <ScrollView style={styles.container}>
+                {
+
+                    this._showLogin()
+                }
 
                 {/* 头部 */}
                 <View style={styles.headContainer}>
@@ -130,13 +157,13 @@ export default class Mine extends PureComponent{
                     {/* 夜间/签到 */}
                     <View style={styles.headTopContainer}>
 
-                        <TouchableOpacity style={styles.topBtnStyle} activeOpacity={.9} onPress={()=>{alert('夜间')}}>
-                            <Image source={require('./../../assets/images/i_night.png')} style={styles.headTopImg} resizeMode={'contain'}/>
+                        <TouchableOpacity style={styles.topBtnStyle} activeOpacity={.9} onPress={() => { alert('夜间') }}>
+                            <Image source={require('./../../assets/images/i_night.png')} style={styles.headTopImg} resizeMode={'contain'} />
                             <Text style={styles.headTopText}>夜间</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.topBtnStyle} activeOpacity={.9} onPress={()=>{alert('签到')}}>
-                            <Image source={require('./../../assets/images/i_sign.png')} style={styles.headTopImg} resizeMode={'contain'}/>
+                        <TouchableOpacity style={styles.topBtnStyle} activeOpacity={.9} onPress={() => { alert('签到') }}>
+                            <Image source={require('./../../assets/images/i_sign.png')} style={styles.headTopImg} resizeMode={'contain'} />
                             <Text style={styles.headTopText}>签到</Text>
                         </TouchableOpacity>
 
@@ -145,7 +172,7 @@ export default class Mine extends PureComponent{
                     {/* 头像、昵称、标签 */}
                     <View style={styles.headCenterContainer}>
                         <Animated.Image style={[styles.userImg, {
-                            transform:[
+                            transform: [
                                 {
                                     rotateY: this.state.rotation.interpolate({
                                         inputRange: [0, 1],
@@ -156,18 +183,20 @@ export default class Mine extends PureComponent{
                                     scale: this.state.scale
                                 }
                             ]
-                        }]} source={require('./../../assets/images/i_user.jpg')} resizeMode={'contain'}/>
+                        }]} source={require('./../../assets/images/i_user.jpg')} resizeMode={'contain'} />
 
-                        <Animated.Text style={[styles.userNickname, {opacity: this.state.opacity, transform: [
+                        <Animated.Text style={[styles.userNickname, {
+                            opacity: this.state.opacity, transform: [
 
-                            {
-                                translateY: this.state.translateY
-                            }
+                                {
+                                    translateY: this.state.translateY
+                                }
 
 
-                        ]}]}>Pinuo</Animated.Text>
+                            ]
+                        }]}>Pinuo</Animated.Text>
                         <View style={styles.positionContainer}>
-                            <Image style={styles.positionImg} source={require('./../../assets/images/i_bookmark.png')}/>
+                            <Image style={styles.positionImg} source={require('./../../assets/images/i_bookmark.png')} />
                             <Text style={styles.positionText}>跟帖局副处长</Text>
                         </View>
                     </View>
@@ -175,17 +204,17 @@ export default class Mine extends PureComponent{
                     {/* 收藏、历史、跟帖 */}
                     <View style={styles.headBottomContainer} >
 
-                        <TouchableOpacity style={styles.bottomBtn} activeOpacity={1} onPress={()=>{alert('收藏')}}>
+                        <TouchableOpacity style={styles.bottomBtn} activeOpacity={1} onPress={() => { alert('收藏') }}>
                             <Text style={styles.bottomNum}>2</Text>
                             <Text style={styles.bottomText}>收藏</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.bottomBtn} activeOpacity={1} onPress={()=>{alert('历史')}}>
+                        <TouchableOpacity style={styles.bottomBtn} activeOpacity={1} onPress={() => { alert('历史') }}>
                             <Text style={styles.bottomNum}>979</Text>
                             <Text style={styles.bottomText}>历史</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.bottomBtn} activeOpacity={1} onPress={()=>{alert('跟帖')}}>
+                        <TouchableOpacity style={styles.bottomBtn} activeOpacity={1} onPress={() => { alert('跟帖') }}>
                             <Text style={styles.bottomNum}>170</Text>
                             <Text style={styles.bottomText}>跟帖</Text>
                         </TouchableOpacity>
@@ -291,7 +320,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     bottomBtn: {
-      alignItems: 'center'
+        alignItems: 'center'
     },
     bottomNum: {
         fontSize: 20,
@@ -307,6 +336,50 @@ const styles = StyleSheet.create({
     },
     settingListContainer: {
         paddingLeft: 20,
+    },
+    tabBarIcon:{
+        width:21,
+        height:21,
+    },
+    loginBtn:{
+        width:100,
+        height:100,
+        backgroundColor:'red',
+        borderRadius:50,
+        marginTop:25,
+        marginLeft:160
+    },
+    loginBtn1:{
+        display:'none'
+    },
+    logintxt:{
+        position:'absolute',
+        top:32,
+        left:25,
+        fontSize:24,
+        color:'white'
+    },
+    wrapper:{
+        marginTop:40,
+        height:140
+    },
+    mineContent:{
+        marginTop:15,
+        flexWrap:'wrap',
+        width:400,
+        display:"flex",
+        flexDirection:'row',
+        marginLeft:30
+    },
+    mineItem:{
+        width:100,
+        height:90
+    },
+    avatar:{
+        width:60,
+        height:60,
+        borderRadius:50,
+       
     }
 
 });

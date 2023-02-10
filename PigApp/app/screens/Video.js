@@ -12,7 +12,7 @@ import {
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'clwy-react-native-scrollable-tab-view';
 import XFFlatList from '../components/HomeFlatList'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 export default class Home extends PureComponent {
 
@@ -25,14 +25,12 @@ export default class Home extends PureComponent {
     }
 
     tabArr = [
-        { columnName: '推荐', requestCode: '' ,requestHome:'video'},
-        { columnName: '猪业资讯', requestCode: 'xinxi' ,requestHome:'video'},
-        { columnName: '养猪技术', requestCode: 'jishushipin' ,requestHome:'video'},
-        { columnName: '每日猪价', requestCode: 'meirizhujia' ,requestHome:'video'},
-        { columnName: '专家讲座', requestCode: 'jiangzuo' ,requestHome:'video'},
-        { columnName: '人物访谈', requestCode: 'fangtanshipin' ,requestHome:'video'},
-        { columnName: '企业宣传', requestCode: 'qiye' ,requestHome:'video'},
-        { columnName: '养猪致富', requestCode: 'qitashipin' ,requestHome:'video'},
+        { columnName: '新闻视频', requestCode: 'xinwensp' ,requestHome:'news'},
+        { columnName: '猪价播报', requestCode: 'zhujiabobao' ,requestHome:'news'},
+        { columnName: '技术视频', requestCode: 'jishusp' ,requestHome:'news'},
+        { columnName: '企业视频', requestCode: 'qiyesp' ,requestHome:'news'},
+        { columnName: '人物访谈', requestCode: 'fangtan' ,requestHome:'news'},
+        { columnName: '直播养猪', requestCode: 'zhibo' ,requestHome:'news'},
     ];
 
     componentDidMount() {

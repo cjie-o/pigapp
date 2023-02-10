@@ -4,7 +4,10 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"math/rand"
+	"net/http"
+	"os"
 	"time"
 )
 
@@ -42,4 +45,20 @@ func GenerateRandomNumber(start int, end int, count int) []int {
 	}
 	fmt.Println(nums)
 	return nums
+}
+func DownLoad(url string) error {
+	b, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer b.Body.Close()
+	k := Md5(url) + ".mp4"
+	out, err := os.Create("./video/" + k)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, b.Body)
+	return err
+
 }

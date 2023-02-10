@@ -2,14 +2,17 @@ package main
 
 import (
 	"server/application"
+	"server/config"
 	"server/database"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
+func init() {
+}
 func main() {
-
-	database.InitDB()
+	config.Init()
+	database.Init()
 	// spider.Run()
 	application.Run()
 

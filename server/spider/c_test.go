@@ -2,8 +2,6 @@ package spider
 
 import (
 	"fmt"
-	"server/database"
-	"strconv"
 	"testing"
 )
 
@@ -14,17 +12,15 @@ var (
 func Test(t *testing.T) {
 
 	ch := make(chan bool)
-
 	for m := range New().bodyer {
-		go aa.Spider(m, New().bodyer[m], strconv.Itoa(1), ch)
-		<-ch
+		go aa.Get(New().bodyer[m], 1, ch)
 	}
-	for m := range Video().bodyer {
-		go aa.Spidervideo(m, Video().bodyer[m], strconv.Itoa(1), ch)
-		<-ch
-	}
+	<-ch
+	// for m := range Video().bodyer {
+	// 	go aa.Spidervideo(m, Video().bodyer[m], strconv.Itoa(1), ch)
+	// 	<-ch
+	// }
 	close(ch)
 	fmt.Println("spider is ok")
-	database.DB.Close()
 
 }

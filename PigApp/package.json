@@ -28,6 +28,7 @@
     "react-native-screens": "^3.18.2",
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-share": "^8.1.0",
+    "react-native-storage": "^1.0.1",
     "react-native-tableview-simple": "^4.3.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",

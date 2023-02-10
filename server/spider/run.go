@@ -2,8 +2,6 @@ package spider
 
 import (
 	"fmt"
-	"server/database"
-	"strconv"
 )
 
 var (
@@ -13,17 +11,14 @@ var (
 func Run() {
 
 	ch := make(chan bool)
-
 	for m := range New().bodyer {
-		go tj.Spider(m, New().bodyer[m], strconv.Itoa(1), ch)
-		<-ch
+		go tj.Get(New().bodyer[m], 1, ch)
 	}
-	for m := range Video().bodyer {
-		go tj.Spidervideo(m, Video().bodyer[m], strconv.Itoa(1), ch)
-		<-ch
-	}
+	<-ch
+	go tj.Getzx(ch)
+	<-ch
+
 	close(ch)
 	fmt.Println("spider is ok")
-	database.DB.Close()
 
 }

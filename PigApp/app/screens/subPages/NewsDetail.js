@@ -18,7 +18,7 @@ import Toast, { DURATION } from 'react-native-easy-toast'
 import ImageViewer from 'react-native-image-zoom-viewer';
 import WebView from 'react-native-webview';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 export default class NewsDetail extends PureComponent {
 
     // 构造器
@@ -26,8 +26,8 @@ export default class NewsDetail extends PureComponent {
         super(props);
 
         this.state = {
-            newsData: '',
-            body: '',
+            newsData: [],
+            Content: '',
             isShowImgModal: false,
             statusBarTranslucent: true,
         };
@@ -94,19 +94,19 @@ export default class NewsDetail extends PureComponent {
     _getNewsDetailData() {
 
         let _this = this;
-        let docid = this.props.route.params.item.docid;
+        let Sid = this.props.route.params.item.Sid;
 
 
         ajax({
-            url: `http://192.168.2.6:19787/api/v1/news/docid/${docid}`,
+            url: `http://192.168.2.6:19787/api/news/sid/${Sid}`,
             success: (data) => {
-                let body = data[docid].body;
-                // data[docid]['img'].forEach(item =>{
-                //     body = body;
+                let [datas] = data;
+                // data[Sid]['img'].forEach(item =>{
+                //     Content = Content;
                 // });
                 _this.setState({
-                    newsData: data[docid],
-                    body: body
+                    newsData: datas,
+                    Content: datas["Content"]
                 });
                 
             },
@@ -190,26 +190,35 @@ export default class NewsDetail extends PureComponent {
 
     render() {
         let htmlStyle = `<style>
-                       p:nth-child(1){
-                        margin-top:2rem;
-                        font-size:4.5rem;
-                        font-weight:bold;
+        div:nth-child(1){
+            font-weight:bold;
+            font-size:4rem;
+            padding:2rem 0;
+        }
+        div:nth-child(2){
+            padding:4rem 0;
+            font-size:2rem;
+        }
+        div:nth-child(3){
+            font-size:3rem;
+            border-radius: 25px;
+            border:1px solid #efefef;
+            background: #f5f5f5;
+            padding:2rem 1rem;
+            margin:4rem 0;
+        }
+        div:nth-child(4){
+            font-size:3rem;
+        }
+
+                       p{
+                        font-size:3rem;
                        }
-                       p:nth-child(2){
-                        font-size:2.5rem;
-                        color:grey;
-                    }
-                    span{
-                        font-size:3.5rem;
-                    }
                     img {
-                        margin-top:3rem;
                         width:100%;
                         position:relative;
                         }
-                        div{
-                            margin-bottom:11rem;
-                        }
+                      
                </style>`
         return (
             <View style={styles.container} >
@@ -220,8 +229,9 @@ export default class NewsDetail extends PureComponent {
                 <View style={[styles.articleContent, { height: screenHeight, marginTop: 10, paddingHorizontal: 5 }]}> */}
 
                 <WebView
-                    source={{ html: htmlStyle + this.state.body }}
+                    source={{ html: htmlStyle +this.state.Content +"&nbsp;&nbsp;&nbsp;"}}
                     injectedJavaScript={`(function(){
+                        document.querySelector("td").style.font-size = '9rem';
                         var objs = document.getElementsByTagName("img");
                         var images = new Array();
                         for(var i=0;i<objs.length;i++){
@@ -249,7 +259,10 @@ export default class NewsDetail extends PureComponent {
                         marginLeft: 16,
                         marginRight: 16,
                     }}
+                    showsVerticalScrollIndicator={false}
+                    textZoom={100}
                 />
+                
                  {/* 图片Modal */}
                  <Modal visible={this.state.isShowImgModal} transparent={false} onRequestClose={ this._closeImgModal }>
                     <ImageViewer index={this.initIndex} imageUrls={this.imgArr} onClick={ this._closeImgModal } />

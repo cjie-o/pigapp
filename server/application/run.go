@@ -1,9 +1,7 @@
 package application
 
-import "server/application/initial"
-
 func Run() {
-	router := initial.InitRouter()
+	router := InitRouter()
 
 	// 这里还可以创建其他的服务
 	// ...

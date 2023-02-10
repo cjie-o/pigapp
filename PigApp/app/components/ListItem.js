@@ -1,7 +1,3 @@
-/**
- * Created by HuangXiaoFeng on 2018-02-08.
- */
-
 import React, { PureComponent } from 'react';
 import {
     TouchableOpacity,
@@ -12,7 +8,7 @@ import {
     View
 } from 'react-native';
 
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 export default class ListItem extends PureComponent{
 
     // 设置默认输入参数

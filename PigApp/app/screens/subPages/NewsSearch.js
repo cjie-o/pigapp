@@ -19,7 +19,7 @@ import {
 import ajax from '../../utils/ajax'
 import Toast, { DURATION } from 'react-native-easy-toast'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 export default class NewsSearch extends PureComponent {
 

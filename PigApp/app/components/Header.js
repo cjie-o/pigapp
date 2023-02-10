@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 // import { isLT19 } from '../utils/ScreenUtil'
 
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 export default class XFFlatList extends PureComponent{
 

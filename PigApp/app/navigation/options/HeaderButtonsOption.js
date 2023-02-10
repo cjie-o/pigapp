@@ -3,7 +3,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Colors from '../../constants/Colors';
 import { TouchableOpacity, Text, View, Dimensions, StyleSheet, StatusBar } from 'react-native'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 const HeaderButtonsOption = navigation => {
 
@@ -33,12 +33,12 @@ const HeaderButtonsOption = navigation => {
             <Text >111111</Text>
           </TouchableOpacity>
         </View>
-        <SimpleLineIcons
+        {/* <SimpleLineIcons
           name="options"
           style={styles.headerSetting}
           size={20}
           onPress={() => navigation.navigate('SettingStack')}
-        />
+        /> */}
       </>
     ),
   };
